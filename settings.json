@@ -1,0 +1,19 @@
+{
+  "ConnectionStringMongo": "mongodb://192.168.57.102:27017", 
+    "ConnectionStringPostgre": {
+        "URL": "jdbc:postgresql://192.168.57.102/test",
+        "user": "postgres",
+        "password": "samis"
+    },
+  "priorityOrder": ["osm", "ingeo", "msml", "oks"],
+  
+  "collection": "h_clusters",
+  "outputFileName": "outSamara16",
+  "filter": {
+    "block" : "Самара"
+  },
+  "database": "debug_region63_samarskaya_obl",
+  "savePath": "C:\\Users\\user\\Documents\\merged geometry\\qgis",
+  "serverMode": true,
+  "writeOriginals": true,
+}
