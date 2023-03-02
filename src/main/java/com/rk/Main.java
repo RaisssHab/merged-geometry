@@ -127,6 +127,13 @@ public class Main {
         featureCollectionW.put("type", "FeatureCollection");
         JSONObject featureW = new JSONObject();
         
+        File file2 = new File("clustIN_for_" + outputFileName + ".geojson");
+        file2.createNewFile();
+        Writer wr2 = new OutputStreamWriter(new FileOutputStream(file2), StandardCharsets.UTF_8);
+
+        JSONArray features2 = new JSONArray();
+        JSONObject featureCollection2 = new JSONObject();
+        featureCollection2.put("type", "FeatureCollection");
 //
 
         Connection conn = DriverManager.getConnection(URL, User, Password);
@@ -207,10 +214,10 @@ public class Main {
                         if (geoObj == null || geoObj.isEmpty()) {
                             continue;
                         }
+                        sourcesSet.add(s[0]);
                         if (geoObj.get("type").equals("Point")) {
                             continue;
                         }
-                        sourcesSet.add(s[0]);
 
 
                         if (!geometriesMap.containsKey(s[0])) {
@@ -226,6 +233,13 @@ public class Main {
                                 throw new RuntimeException(e);
                             }
                         }
+                        JSONObject feature2 = new JSONObject();
+                        JSONObject properties2 = new JSONObject();
+                        feature2.put("type", "Feature");
+                        feature2.put("geometry", geoObj);
+                        properties2.put("ID", clusterDoc.getObjectId("_id").toString());
+                        feature2.put("properties", properties2);
+                        features2.add(feature2);
                     }
                 } // конец цикла для пробега по массиву с ссылками на источники
             };
@@ -410,6 +424,11 @@ public class Main {
         wrW.write(featureCollectionW.toString());
         wrW.flush();
         wrW.close();
+
+        featureCollection2.put("features", features2);
+        wr2.write(featureCollection2.toString());
+        wr2.flush();
+        wr2.close();
 
         mongo.close();
         conn.close();
